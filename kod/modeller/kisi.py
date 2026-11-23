@@ -96,3 +96,39 @@ class Tanik(Kisi):
 
     def __str__(self):
         return f"Tanık: {super().__str__()}"
+
+
+class Dedektif(Kisi):
+    def __init__(self, ad, soyad, tc=None, d_tarihi=None, telefon=None, adres=None, id=None, sicil_no=None):
+        super().__init__(ad, soyad, tc, d_tarihi, telefon, adres, id)
+        self.sicil_no = sicil_no
+        self._vakalar = []
+
+    @property
+    def sicil_no(self):
+        return self._sicil_no
+
+    @sicil_no.setter
+    def sicil_no(self, deger):
+        if deger is None:
+            raise ValueError("Sicil No Zorunlu")
+        deger = deger.strip().upper()
+        if len(deger) != 6:
+            raise ValueError("Sicil No 6 Karakterden Oluşmalı")
+        if deger[:2] != "D-":
+            raise ValueError("Sicil No D- İle Başlamalı")
+        if not deger[2:].isdigit():
+            raise ValueError("Sicil No Sayı İle Bitmeli")
+        self._sicil_no = deger
+
+    def vaka_ata(self, vaka_id):
+        if vaka_id in self._vakalar:
+            raise ValueError("Bu Vaka Zaten Atanmış")
+        else:
+            self._vakalar.append(vaka_id)
+
+    def vaka_sayisi(self):
+        return len(self._vakalar)
+
+    def __str__(self):
+        return f"Dedektif: {super().__str__()}"
