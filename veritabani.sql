@@ -68,6 +68,8 @@ CREATE TABLE vaka_kisileri (
     kisi_id   INTEGER NOT NULL REFERENCES kisiler(id) ON DELETE CASCADE,
     rol       TEXT    NOT NULL CHECK (rol IN ('Şüpheli', 'Tanık', 'Kurban')),
     motif     TEXT,                  -- yalnızca şüpheliler için anlamlı
+    guvenilirlik INTEGER             -- yalnızca tanıklar için: 0-100 arası güvenilirlik puanı
+              CHECK (guvenilirlik IS NULL OR guvenilirlik BETWEEN 0 AND 100),
     PRIMARY KEY (vaka_id, kisi_id)
 );
 
@@ -141,16 +143,17 @@ INSERT INTO vakalar (baslik, aciklama, olay_yeri, olay_baslangic, olay_bitis, du
      'Bir apartmanın posta kutularından aylarca mektup kayboldu. Delil yetersizliğinden kapatıldı.',
      'Kuzguncuk', '2026-08-03 00:00', '2026-09-30 23:59', 'Kapandı', 1, NULL);
 
-INSERT INTO vaka_kisileri (vaka_id, kisi_id, rol, motif) VALUES
-    (1, 1, 'Kurban',  NULL),
-    (1, 2, 'Şüpheli', 'Kurbanın tek mirasçısı; dükkân ve kitap koleksiyonu ona kalıyor.'),
-    (1, 3, 'Şüpheli', 'Kurbana yüklü miktarda borcu var, iki hafta önce tartıştıkları biliniyor.'),
-    (1, 4, 'Şüpheli', 'Kurbanın çırağı. Dükkândan nadir kitap çalıp internetten sattığı ortaya çıkmak üzereydi.'),
-    (1, 5, 'Şüpheli', 'Satılmayan bir ilk baskı kitap yüzünden kurbanla aynı gün tartıştı.'),
-    (1, 6, 'Tanık',   NULL),
-    (1, 7, 'Tanık',   NULL),
-    (2, 8, 'Tanık',   NULL),
-    (2, 9, 'Şüpheli', 'Gece vardiyasında tek başınaydı, kumar borcu var.');
+-- Tanık güvenilirliği: Ayten tarafsız bir komşu (yüksek), Burak şüpheli Murat'ın arkadaşı (orta).
+INSERT INTO vaka_kisileri (vaka_id, kisi_id, rol, motif, guvenilirlik) VALUES
+    (1, 1, 'Kurban',  NULL, NULL),
+    (1, 2, 'Şüpheli', 'Kurbanın tek mirasçısı; dükkân ve kitap koleksiyonu ona kalıyor.', NULL),
+    (1, 3, 'Şüpheli', 'Kurbana yüklü miktarda borcu var, iki hafta önce tartıştıkları biliniyor.', NULL),
+    (1, 4, 'Şüpheli', 'Kurbanın çırağı. Dükkândan nadir kitap çalıp internetten sattığı ortaya çıkmak üzereydi.', NULL),
+    (1, 5, 'Şüpheli', 'Satılmayan bir ilk baskı kitap yüzünden kurbanla aynı gün tartıştı.', NULL),
+    (1, 6, 'Tanık',   NULL, 80),
+    (1, 7, 'Tanık',   NULL, 55),
+    (2, 8, 'Tanık',   NULL, 70),
+    (2, 9, 'Şüpheli', 'Gece vardiyasında tek başınaydı, kumar borcu var.', NULL);
 
 -- Vaka 1 delilleri
 INSERT INTO deliller (vaka_id, kisi_id, tur, aciklama, yer, zaman, kayit_tarihi, analiz_turu, kaynak, tanik_id) VALUES
