@@ -72,6 +72,14 @@ class Sahne(ctk.CTkFrame):
     def px(self, deger):
         return max(1, round(deger * self.s))
 
+    def wpx(self, deger):
+        """CustomTkinter widget boyutu: ekran ölçeği (DPI) payı düşülmüş px()."""
+        try:
+            olcek = ctk.ScalingTracker.get_widget_scaling(self)
+        except Exception:
+            olcek = 1.0
+        return max(1, round(deger * self.s / olcek))
+
     def F(self, boyut, kalin=False, aile=tema.DAKTILO):
         """Ölçeklenmiş canvas yazı tipi (negatif boyut = piksel)."""
         return (aile, -max(7, round(boyut * self.s)), "bold" if kalin else "normal")

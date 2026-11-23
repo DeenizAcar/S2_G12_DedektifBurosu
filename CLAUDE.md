@@ -84,6 +84,14 @@ gerektirirse bu listeye eklenir. `vt` `None` ise ekranlar "bağlantısız" modda
 |---|---|---|
 | `dedektif_bul(sicil_no)` | `(id, ad, soyad, sicil_no)` veya `None` | giriş |
 | `dedektif_vakalari(dedektif_id)` | `[(vaka_id, baslik, durum, olay_baslangic), ...]` | masa |
+| `kisileri_listele()` | `[(id, ad, soyad, tc_no, dogum_tarihi, telefon, adres), ...]` soyad/ad sırasıyla | şahıs arşivi |
+| `kisi_ekle(kisi)` | yeni id (int); `kisi` bir `Kisi` nesnesi, id'si de nesneye yazılır | şahıs arşivi |
+| `kisi_guncelle(kisi)` | — (`kisi.id`'ye göre günceller) | şahıs arşivi |
+| `kisi_sil(kisi_id)` | — | şahıs arşivi |
+
+Ekle/güncelle/sil hataları (UNIQUE TC, fail olarak kayıtlı kişiyi silme → FOREIGN KEY) `VeriTabani`
+içinde yutulmaz; GUI yakalayıp anlamlı mesaj gösterir. GUI `Kisi` nesnesini konumsal parametrelerle
+oluşturur: `Kisi(ad, soyad, tc, dogum_tarihi, telefon, adres, id)`; boş alanlar `None` gönderilir.
 
 ### Görsel dil
 

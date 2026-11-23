@@ -8,10 +8,17 @@ import customtkinter as ctk
 from gui import efektler, tema
 from gui.giris_ekrani import GirisEkrani
 from gui.masa import Masa
+from gui.sahis_arsivi import SahisArsivi
 from gui.yapim_asamasinda import YapimAsamasinda
 
-# anahtar: (ekran başlığı, ekranı hazırlayacak üye)
-# Bir üye kendi ekranını yazınca sayfa_ac() içinde buraya bağlanır.
+# Hazır olan ekranlar. Her ekran sınıfı (master, uygulama, vaka_id=None) alır.
+# Burada olmayan anahtarlar için geçici "yapım aşamasında" sayfası açılır.
+EKRANLAR = {
+    "kisiler": SahisArsivi,
+}
+
+# Henüz yazılmamış ekranlar — anahtar: (ekran başlığı, ekranı hazırlayacak üye).
+# Bir üye kendi ekranını yazınca yukarıdaki EKRANLAR sözlüğüne ekler.
 SAYFALAR = {
     "kisiler": ("Şahıs Arşivi", "Deniz Acar"),
     "vaka_detay": ("Vaka Dosyası", "AhmetRasimVural"),
@@ -68,6 +75,9 @@ class AnaPencere(ctk.CTk):
         self._ekran_degistir(Masa(self, self))
 
     def sayfa_ac(self, anahtar, vaka_id=None):
-        baslik, sorumlu = SAYFALAR[anahtar]
         self.ses.cal("kagit")
-        self._ekran_degistir(YapimAsamasinda(self, self, baslik, sorumlu, vaka_id))
+        if anahtar in EKRANLAR:
+            self._ekran_degistir(EKRANLAR[anahtar](self, self, vaka_id=vaka_id))
+        else:
+            baslik, sorumlu = SAYFALAR[anahtar]
+            self._ekran_degistir(YapimAsamasinda(self, self, baslik, sorumlu, vaka_id))
