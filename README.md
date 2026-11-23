@@ -33,5 +33,6 @@ https://github.com/DeenizAcar/S2_G12_DedektifBurosu
 |---|---|
 | Claude | `veritabani.sql`: tablo tasarımı, örnek veri (demo vaka senaryosu) ve temel sorgular |
 | Claude | `README.md` şablonu |
+| Claude | `kod/main.py`, `kod/gui/ana_pencere.py`, `kod/gui/tema.py`: ana pencere, menü ve Ana Panel arayüzü |
 
 _(Proje ilerledikçe güncellenecek. Back end sınıfları yapay zekâ kullanılmadan yazılmaktadır.)_
