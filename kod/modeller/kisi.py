@@ -26,7 +26,7 @@ class Kisi:
     def ad(self, deger):
         if deger.strip() == "":
             raise ValueError("Ad Boş Olamaz")
-        self._ad = deger
+        self._ad = deger.strip()
 
     @property
     def soyad(self):
@@ -36,10 +36,36 @@ class Kisi:
     def soyad(self, deger):
         if deger.strip() == "":
             raise ValueError("Soyad Boş Olamaz")
-        self._soyad = deger
+        self._soyad = deger.strip()
 
 
     def __str__(self):
         return f"Ad: {self.ad} Soyad: {self.soyad}"
 
 
+class Supheli(Kisi):
+    def __init__(self, ad, soyad, tc=None, d_tarihi=None, telefon=None, adres=None, id=None, motif=None):
+        super().__init__(ad, soyad, tc, d_tarihi, telefon, adres, id)
+        self.motif = motif
+
+    @property
+    def motif(self):
+        return self._motif
+
+    @motif.setter
+    def motif(self, deger):
+        if deger is None:
+            self._motif = deger
+        else:
+            self._motif = deger.strip()
+            if deger.strip() == "":
+                self._motif = None
+
+    def motifi_var_mi(self):
+        if self.motif is not None:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return f"Şüpheli: {super().__str__()}"
