@@ -44,8 +44,8 @@ sınıflarının ve `VeriTabani` sınıfının metotlarını çağırır.
 
 ```
 kod/
-  main.py                 # uygulamayı başlatır
-  requirements.txt
+  main.py                 # uygulamayı başlatır, VeriTabani nesnesini pencereye verir
+  requirements.txt        # customtkinter, pillow
   veritabani.py           # VeriTabani sınıfı: tüm SQL burada  (BACK END — YZ yasak)
   modeller/               # iş mantığı sınıfları             (BACK END — YZ yasak)
     kisi.py               # Kisi, Supheli, Tanik, Dedektif
@@ -53,17 +53,41 @@ kod/
     vaka.py               # Vaka
     sorusturma.py         # Sorusturma (analiz motoru)
   gui/                    # arayüz (YZ serbest)
-    ana_pencere.py        # ana panel: vaka listesi, özet
-    vaka_detay.py         # sekmeler: kişiler / deliller / alibiler (CRUD)
-    zaman_cizelgesi.py    # olaylar + alibiler saat ekseninde, çelişki kırmızı
-    iliski_panosu.py      # şüpheli–delil ağı ("kırmızı ipli pano")
-    analiz_ekrani.py      # şüphe puanı sıralaması, çelişki raporu
+    ana_pencere.py        # ekran akışı: giriş -> masa -> ekranlar; SAYFALAR sözlüğü
+    sahne.py              # Sahne taban sınıfı: masa arka planı, ölçekleme, tıklanabilir nesneler
+    giris_ekrani.py       # personel kartıyla dedektif girişi
+    masa.py               # ana ekran: masadaki nesneler ekranlara açılır
+    yapim_asamasinda.py   # henüz yazılmamış ekranlar için geçici "iç yazışma" sayfası
+    tema.py               # renkler, yazı tipleri, kâğıt temalı Treeview stili
+    dokular.py            # Pillow ile kâğıt/masa/kraft/damga görüntüleri
+    efektler.py           # Ses, damga_bas, daktilo_yaz, titret
+    sesler/*.wav          # kodla sentezlenmiş ses efektleri
 veritabani.sql            # CREATE TABLE + örnek veri (demo vaka) + temel sorgular
 README.md
 ```
 
 GUI bir model metoduna ihtiyaç duyar ve o metot henüz yoksa: metodu **sen yazma**. Kullanıcıya
 hangi isimde, hangi parametreyle, ne döndüren bir metoda ihtiyaç olduğunu söyle; sınıf sahibi yazsın.
+
+### Arayüz ↔ back end sözleşmesi
+
+GUI, `VeriTabani` nesnesinden (`self.uyg.vt`) şu metotları bekler. Yeni bir ekran yeni metot
+gerektirirse bu listeye eklenir. `vt` `None` ise ekranlar "bağlantısız" modda çalışmalı.
+
+| Metot | Döndürür | Kullanan ekran |
+|---|---|---|
+| `dedektif_bul(sicil_no)` | `(id, ad, soyad, sicil_no)` veya `None` | giriş |
+| `dedektif_vakalari(dedektif_id)` | `[(vaka_id, baslik, durum, olay_baslangic), ...]` | masa |
+
+### Görsel dil
+
+Soğuk Savaş dönemi devlet dairesi: zeytin yeşili metal masa, krem formlar, kraft dosyalar,
+mürekkep damgaları, daktilo yazısı (`Courier New`). Yeni ekranlar `Sahne` sınıfından türetilir,
+renkleri `tema.RENKLER`'den alır, efektleri `efektler` modülünden kullanır. Hazır görsel/ses
+dosyası eklenmez; dokular `dokular.py` ile üretilir. Belirli bir oyunun görünümü kopyalanmaz.
+
+Yeni ekran bağlamak: `ana_pencere.py` içinde `sayfa_ac()` ilgili anahtar için
+`YapimAsamasinda` yerine yeni sınıfı oluşturacak şekilde güncellenir.
 
 ### Sınıflar (GUI hariç)
 
@@ -76,24 +100,31 @@ hangi isimde, hangi parametreyle, ne döndüren bir metoda ihtiyaç olduğunu s�
 
 ### Tablolar (SQLite)
 
-`dedektifler`, `vakalar` (dedektif_id FK), `kisiler` (tur: supheli/tanik), `vaka_kisileri`
-(vaka–kişi çoka-çok, rol), `deliller` (vaka_id FK, kisi_id FK, tur, zaman, yer), `alibiler`
-(kisi_id FK, vaka_id FK, baslangic, bitis, yer), `ifadeler`. PK / FK / NOT NULL kısıtları eksiksiz;
-`PRAGMA foreign_keys = ON`.
+Şema `veritabani.sql` içindedir (6 tablo): `dedektifler`, `kisiler`, `vakalar` (dedektif_id FK,
+fail_id FK), `vaka_kisileri` (vaka–kişi çoka-çok; `rol`: Şüpheli/Tanık/Kurban, `motif`),
+`deliller` (vaka_id FK, kisi_id FK, tanik_id FK; `tur`: Fiziksel/Dijital/Tanık İfadesi; türe
+özgü sütunlar diğer türlerde NULL), `alibiler` (vaka_id FK, kisi_id FK, yer, baslangic, bitis).
+Kişinin rolü `kisiler`'de değil `vaka_kisileri`'nde tutulur. Tarih biçimi `'YYYY-MM-DD HH:MM'`.
+PK / FK / NOT NULL / CHECK kısıtları eksiksiz; `PRAGMA foreign_keys = ON`.
+
+Demo vaka "Moda Sahafı Cinayeti": gerçek fail Can Yıldız (alibisi sinema, ama telefonu ve tanık
+onu olay yerinde gösteriyor). Selin (miras) ve Hakan (dükkânda parmak izi, ama olaydan önce)
+yanıltıcı ipuçlarıdır. Alibi çelişkisi yalnızca Can'da çıkmalı.
 
 ### Ekranlar
 
-Ana panel, Vaka detayı (CRUD), Zaman çizelgesi, İlişki panosu, Analiz ekranı.
-Dört CRUD işlemi (ekle, listele, güncelle, sil) arayüzden yapılabilmeli; girişlerde doğrulama,
-try/except ve anlamlı `messagebox` hata mesajları olmalı.
+Giriş, Masa (ana ekran), Şahıs Arşivi, Vaka Dosyası, Yeni Vaka, İlişki Panosu, Zaman Çizelgesi,
+Şüphe Analizi. Dört CRUD işlemi (ekle, listele, güncelle, sil) arayüzden yapılabilmeli; girişlerde
+doğrulama, try/except ve anlamlı `messagebox` hata mesajları olmalı. Doğrulama kuralları model
+sınıfında (setter `ValueError` fırlatır), GUI yalnızca hatayı yakalayıp gösterir.
 
 ## Görev dağılımı
 
 | Üye | İş mantığı sınıfları | GUI ekranı |
 |---|---|---|
-| 1 | `Kisi`, `Supheli`, `Tanik`, `Dedektif`, `VeriTabani` | Ana panel |
-| 2 | `Delil`, `FizikselDelil`, `DijitalDelil`, `TanikIfadesi` | Vaka detayı, İlişki panosu |
-| 3 | `Vaka`, `Sorusturma` | Zaman çizelgesi, Analiz ekranı |
+| Deniz Acar (DeenizAcar) | `Kisi`, `Supheli`, `Tanik`, `Dedektif`, `VeriTabani` | Giriş, Masa, Şahıs Arşivi |
+| AhmetRasimVural | `Delil`, `FizikselDelil`, `DijitalDelil`, `TanikIfadesi` | Vaka Dosyası, İlişki Panosu |
+| Xavnetex | `Vaka`, `Sorusturma` | Yeni Vaka, Zaman Çizelgesi, Şüphe Analizi |
 
 (Üye adları ve GitHub kullanıcı adları README'deki tabloda.)
 
@@ -103,7 +134,10 @@ try/except ve anlamlı `messagebox` hata mesajları olmalı.
   ve kendi dosyalarını** commit eder. Başka bir üyenin dosyasını onun yerine yazıp commit etme.
 - Commit mesajları Türkçe ve açıklayıcı ("Delil sinifi ve guvenilirlik metodu eklendi").
   "guncelleme", "son hali" gibi mesajlar puan düşürür. Commit'ler haftalara yayılmalı.
+- Commit mesajlarına `Co-Authored-By: Claude` satırı **eklenmez**; YZ kullanımı yalnızca README beyanında yazılır.
 - Önce Pull, sonra çalış, sonra Commit and Push.
+- Kurulum: PyCharm `uv` ile `.venv` oluşturur; paketler için `uv pip install -r kod/requirements.txt`.
+  `pyproject.toml` ve `uv.lock` depoya girmez.
 - `.db`, `venv/`, `.idea/` depoya girmez (`.gitignore`). `.db` yalnızca teslim zip'ine konur.
 - İsimlendirme: Türkçe, Türkçe karakter yok; sınıflar `PascalCase`, metot/değişkenler `snake_case`.
 - Derste görülmeyen ileri düzey yapılardan kaçın (metaclass, decorator fabrikaları, async vb.).
