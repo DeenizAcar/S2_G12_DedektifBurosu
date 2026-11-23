@@ -8,9 +8,9 @@ Dedektif büroları için vaka, şüpheli ve delil yönetimi yapan; alibi çeli�
 
 | Üye | GitHub | Sorumlu olduğu sınıflar | GUI ekranı |
 |---|---|---|---|
-| | | | |
-| | | | |
-| | | | |
+| Deniz Acar | [DeenizAcar](https://github.com/DeenizAcar) | `Kisi`, `Supheli`, `Tanik`, `Dedektif`, `VeriTabani` | Ana panel, kişi yönetimi |
+| _Ad Soyad_ | [AhmetRasimVural](https://github.com/AhmetRasimVural) | `Delil`, `FizikselDelil`, `DijitalDelil`, `TanikIfadesi` | Vaka detayı (deliller), ilişki panosu |
+| _Ad Soyad_ | [Xavnetex](https://github.com/Xavnetex) | `Vaka`, `Sorusturma` | Zaman çizelgesi, analiz ekranı |
 
 ## Kullanılan Teknolojiler
 
@@ -29,4 +29,9 @@ https://github.com/DeenizAcar/S2_G12_DedektifBurosu
 
 ## Yapay Zekâ Kullanım Beyanı
 
-_(Proje ilerledikçe doldurulacak: hangi araç, hangi dosya/iş için kullanıldı.)_
+| Araç | Kullanıldığı dosya / iş |
+|---|---|
+| Claude | `veritabani.sql`: tablo tasarımı, örnek veri (demo vaka senaryosu) ve temel sorgular |
+| Claude | `README.md` şablonu |
+
+_(Proje ilerledikçe güncellenecek. Back end sınıfları yapay zekâ kullanılmadan yazılmaktadır.)_
