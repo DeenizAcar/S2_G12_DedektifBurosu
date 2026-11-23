@@ -25,7 +25,8 @@ akademik dürüstlük süreci başlar. Bu yüzden:
 | SQL / şema | `veritabani.sql`, SQL sorgu metinleri | Yardım serbest. Kullanılan kısım beyan edilir. |
 | Dokümantasyon | `README.md`, diyagramlar, sunum | Serbest. İçerik kodla uyumlu olmalı. |
 
-Back end konusunda kullanıcı yardım isterse **öğretmen modu** geçerlidir (grupla anlaşıldı):
+Back end konusunda kullanıcı yardım isterse **öğretmen modu** geçerlidir. Dersin hocası 23.11.2026'da
+"YZ'ye kodu okutup hatanın yerini ve nedenini söyletebilirsiniz" diyerek bunu onayladı:
 - Python/OOP **kavramlarını** (kalıtım, `@property`, override, try/except, sqlite3 parametreli sorgu…)
   genel örneklerle anlatabilirsin.
 - Öğrencinin yazdığı kodu okuyup **hatanın yerini (dosya/satır) ve nedenini** söyleyebilirsin
