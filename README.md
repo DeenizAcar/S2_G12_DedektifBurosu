@@ -54,4 +54,6 @@ https://github.com/DeenizAcar/S2_G12_DedektifBurosu
 | Claude | `kod/main.py` ve `kod/gui/` klasörü: pencere akışı, giriş ekranı, vaka masası, geçici sayfalar, tema, dokular ve efektler |
 | Claude | `kod/gui/sesler/*.wav`: ses efektleri Python koduyla sentezlendi (hazır ses dosyası kullanılmadı) |
 
-_(Proje ilerledikçe güncellenecek. Back end sınıfları yapay zekâ kullanılmadan yazılmaktadır.)_
+| Claude | Back end (`kod/modeller/`, `kod/veritabani.py`): kod yazdırılmadı. Kavram açıklaması, hata mesajlarının anlamı ve hataların yeri/nedeni hakkında açıklama alındı; düzeltmeler öğrenciler tarafından yazıldı. |
+
+_(Proje ilerledikçe güncellenecek.)_

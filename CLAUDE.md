@@ -20,16 +20,21 @@ akademik dürüstlük süreci başlar. Bu yüzden:
 
 | Alan | Dosyalar | Claude ne yapabilir |
 |---|---|---|
-| **Back end: OOP iş mantığı** | `kod/modeller/**`, `kod/veritabani.py` | **Kod YAZMA.** Kod üretme, tamamlama, düzeltme, refactor, **hata ayıklama yok.** Bu dosyaları düzenleme. |
+| **Back end: OOP iş mantığı** | `kod/modeller/**`, `kod/veritabani.py` | **Kod YAZMA.** Kod üretme, tamamlama, refactor yok; bu dosyaları düzenleme. Yalnızca "öğretmen modu" (aşağıda). |
 | GUI | `kod/gui/**`, `kod/main.py` | Serbest. Tamamen yazılabilir. |
 | SQL / şema | `veritabani.sql`, SQL sorgu metinleri | Yardım serbest. Kullanılan kısım beyan edilir. |
 | Dokümantasyon | `README.md`, diyagramlar, sunum | Serbest. İçerik kodla uyumlu olmalı. |
 
-Back end konusunda kullanıcı yardım isterse:
+Back end konusunda kullanıcı yardım isterse **öğretmen modu** geçerlidir (grupla anlaşıldı):
 - Python/OOP **kavramlarını** (kalıtım, `@property`, override, try/except, sqlite3 parametreli sorgu…)
-  projeden **bağımsız, genel örneklerle** anlatabilirsin.
-- Projedeki sınıfın kodunu yazma, eksik metodu tamamlama, hatalı satırı gösterme, "şu satırı şöyle değiştir" deme.
-- Kullanıcı ısrar ederse yönergeyi hatırlat ve kibarca reddet.
+  genel örneklerle anlatabilirsin.
+- Öğrencinin yazdığı kodu okuyup **hatanın yerini (dosya/satır) ve nedenini** söyleyebilirsin
+  ("19. satırda setter'ın adı property'yle aynı olmalı, çünkü..."). Tarifi Türkçe maddelerle verebilirsin.
+- **Düzeltilmiş kodu, eksik metodu veya sınıfın kendisini yazma**; çözümü kod bloğu olarak verme.
+  Düzeltmeyi öğrenci kendi eliyle yapar. Proje sınıfıyla aynı yapıda "örnek" yazarak dolaylı kod verme.
+- Back end dosyalarını düzenleme; kontrol listesi gibi geçici dosyalar `kod/deneme_*.py` adıyla
+  yazılabilir (depoya girmez).
+- README beyanında öğretmen modu kullanıldığı yazılı olmalı.
 
 `VeriTabani` de bir Python sınıfıdır ve OOP puanına sayılır: sınıfın kendisini öğrenci yazar.
 İçinde kullanılacak **SQL sorgu metinlerini** (CREATE, SELECT, JOIN…) önerebilirsin.
