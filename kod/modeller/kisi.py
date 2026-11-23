@@ -69,3 +69,30 @@ class Supheli(Kisi):
 
     def __str__(self):
         return f"Şüpheli: {super().__str__()}"
+
+
+class Tanik(Kisi):
+    def __init__(self, ad, soyad, tc=None, d_tarihi=None, telefon=None, adres=None, id=None, guvenilirlik=50):
+        super().__init__(ad, soyad, tc, d_tarihi, telefon, adres, id)
+        self.guvenilirlik = guvenilirlik
+
+    @property
+    def guvenilirlik(self):
+        return self._guvenilirlik
+
+    @guvenilirlik.setter
+    def guvenilirlik(self, deger):
+        if not isinstance(deger, int):
+            raise ValueError("Guvenilirlik Tam Sayı Olmalıdır")
+        if not 0 <= deger <= 100:
+            raise ValueError("Güvenilirlik 0 İle 100 Arasında Olmalıdır")
+        self._guvenilirlik = deger
+
+    def guvenilir_mi(self):
+        if self.guvenilirlik >= 60:
+            return True
+        else:
+            return False
+
+    def __str__(self):
+        return f"Tanık: {super().__str__()}"
