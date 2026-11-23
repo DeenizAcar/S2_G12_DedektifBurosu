@@ -1,16 +1,27 @@
 """DedektifBurosu — uygulamanın başlangıç noktası."""
+from pathlib import Path
+from tkinter import messagebox
+
 from gui.ana_pencere import AnaPencere
+from veritabani import VeriTabani
+
+# .db dosyası main.py ile aynı klasörde (kod/) tutulur; teslim zip'inde de burada olur.
+DB_YOLU = Path(__file__).resolve().parent / "dedektif_burosu.db"
 
 
 def main():
-    # VeriTabani sınıfı yazılınca burada oluşturulup pencereye verilecek:
-    #   vt = VeriTabani("dedektif_burosu.db")
-    # Arayüzün şu an VeriTabani'ndan beklediği metotlar:
-    #   dedektif_bul(sicil_no)          -> (id, ad, soyad, sicil_no) ya da None
-    #   dedektif_vakalari(dedektif_id)  -> [(vaka_id, baslik, durum, olay_baslangic), ...]
-    vt = None
+    try:
+        vt = VeriTabani(DB_YOLU)
+    except Exception as hata:
+        # Veri tabanı açılamazsa uygulama yine açılır, "bağlantısız" modda çalışır.
+        messagebox.showerror("Veri tabanı hatası", f"Veri tabanı açılamadı:\n{hata}")
+        vt = None
+
     uygulama = AnaPencere(vt)
     uygulama.mainloop()
+
+    if vt is not None:
+        vt.kapat()
 
 
 if __name__ == "__main__":
