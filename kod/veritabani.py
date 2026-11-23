@@ -28,3 +28,28 @@ class VeriTabani:
 
     def kapat(self):
         self.baglanti.close()
+
+    def kisileri_listele(self):
+        sorgu = "SELECT id, ad, soyad, tc_no, dogum_tarihi, telefon, adres FROM kisiler ORDER BY soyad, ad"
+        imlec = self.baglanti.execute(sorgu)
+        return imlec.fetchall()
+
+    def kisi_ekle(self, kisi):
+        sorgu = "INSERT INTO kisiler (ad, soyad, tc_no, dogum_tarihi, telefon, adres) VALUES (?, ?, ?, ?, ?, ?)"
+        degerler = (kisi.ad, kisi.soyad, kisi.tc, kisi.d_tarihi, kisi.telefon, kisi.adres)
+        imlec = self.baglanti.execute(sorgu, degerler)
+        self.baglanti.commit()
+        kisi.id = imlec.lastrowid
+        return kisi.id
+
+    def kisi_guncelle(self, kisi):
+        sorgu = "UPDATE kisiler SET ad = ?, soyad = ?, tc_no = ?, dogum_tarihi = ?, telefon = ?, adres = ? WHERE id = ?"
+        degerler = (kisi.ad, kisi.soyad, kisi.tc, kisi.d_tarihi, kisi.telefon, kisi.adres, kisi.id)
+        self.baglanti.execute(sorgu, degerler)
+        self.baglanti.commit()
+
+    def kisi_sil(self, kisi_id):
+        sorgu = "DELETE FROM kisiler WHERE id = ?"
+        degerler = (kisi_id,)
+        self.baglanti.execute(sorgu, degerler)
+        self.baglanti.commit()
