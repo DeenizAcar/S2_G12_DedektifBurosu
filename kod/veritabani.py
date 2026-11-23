@@ -21,9 +21,9 @@ class VeriTabani:
         imlec = self.baglanti.execute(sorgu, (sicil_no,))
         return imlec.fetchone()
 
-    def dedektif_vakalari(self, vaka_id):
+    def dedektif_vakalari(self, dedektif_id):
         sorgu = "SELECT id, baslik, durum, olay_baslangic FROM vakalar WHERE dedektif_id = ? ORDER BY olay_baslangic"
-        imlec = self.baglanti.execute(sorgu, (int(vaka_id),))
+        imlec = self.baglanti.execute(sorgu, (int(dedektif_id),))
         return imlec.fetchall()
 
     def kapat(self):
