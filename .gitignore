@@ -11,3 +11,7 @@ venv/
 
 # Veri tabanı dosyası yalnızca zip'e konur (yönerge Ek A.7)
 *.db
+
+# PyCharm/uv tarafından üretilen proje dosyaları (bağımlılıklar kod/requirements.txt içinde)
+pyproject.toml
+uv.lock

@@ -125,14 +125,21 @@ INSERT INTO kisiler (ad, soyad, tc_no, dogum_tarihi, telefon, adres) VALUES
     ('Leyla',  'Arslan', '80000000898', '1985-12-04', '0539 880 90 12', 'Nişantaşı, Şişli'),      -- 8 galeri sahibi
     ('Emre',   'Kılınç', '90000000934', '1990-06-25', '0546 990 23 45', 'Nişantaşı, Şişli');      -- 9 galeri bekçisi
 
--- Vaka 1: demo vakası (açık). Vaka 2: daha önce çözülmüş küçük bir vaka.
+-- Vaka 1: demo vakası (soruşturmada). Vaka 2: çözülmüş küçük bir vaka.
+-- Vaka 3-4: masada dolu görünsün diye ayrıntısız kayıtlar.
 INSERT INTO vakalar (baslik, aciklama, olay_yeri, olay_baslangic, olay_bitis, durum, dedektif_id, fail_id) VALUES
     ('Moda Sahafı Cinayeti',
      'Sahaf sahibi Kemal Aksoy dükkânında ölü bulundu. Kasa açık, nadir kitap rafı dağınık. Otopsiye göre ölüm 21:00-22:00 arasında.',
      'Moda Sahafı', '2026-11-14 21:00', '2026-11-14 22:00', 'Soruşturmada', 1, NULL),
     ('Nişantaşı Kayıp Tablo',
      'Galeriden 19. yüzyıla ait bir yağlıboya tablo kayboldu.',
-     'Arslan Galeri', '2026-10-02 01:00', '2026-10-02 05:00', 'Çözüldü', 2, 9);
+     'Arslan Galeri', '2026-10-02 01:00', '2026-10-02 05:00', 'Çözüldü', 2, 9),
+    ('Haydarpaşa Emanet Dolabı',
+     'Gar emanet dolabında sahibi belirsiz, içinde şifreli mektuplar olan bir çanta bulundu.',
+     'Haydarpaşa Garı', '2026-11-19 08:00', '2026-11-19 09:30', 'Açık', 1, NULL),
+    ('Kuzguncuk Kayıp Mektuplar',
+     'Bir apartmanın posta kutularından aylarca mektup kayboldu. Delil yetersizliğinden kapatıldı.',
+     'Kuzguncuk', '2026-08-03 00:00', '2026-09-30 23:59', 'Kapandı', 1, NULL);
 
 INSERT INTO vaka_kisileri (vaka_id, kisi_id, rol, motif) VALUES
     (1, 1, 'Kurban',  NULL),

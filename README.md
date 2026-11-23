@@ -8,14 +8,32 @@ Dedektif büroları için vaka, şüpheli ve delil yönetimi yapan; alibi çeli�
 
 | Üye | GitHub | Sorumlu olduğu sınıflar | GUI ekranı |
 |---|---|---|---|
-| Deniz Acar | [DeenizAcar](https://github.com/DeenizAcar) | `Kisi`, `Supheli`, `Tanik`, `Dedektif`, `VeriTabani` | Ana panel, kişi yönetimi |
-| _Ad Soyad_ | [AhmetRasimVural](https://github.com/AhmetRasimVural) | `Delil`, `FizikselDelil`, `DijitalDelil`, `TanikIfadesi` | Vaka detayı (deliller), ilişki panosu |
-| _Ad Soyad_ | [Xavnetex](https://github.com/Xavnetex) | `Vaka`, `Sorusturma` | Zaman çizelgesi, analiz ekranı |
+| Deniz Acar | [DeenizAcar](https://github.com/DeenizAcar) | `Kisi`, `Supheli`, `Tanik`, `Dedektif`, `VeriTabani` | Giriş ekranı, vaka masası, şahıs arşivi |
+| _Ad Soyad_ | [AhmetRasimVural](https://github.com/AhmetRasimVural) | `Delil`, `FizikselDelil`, `DijitalDelil`, `TanikIfadesi` | Vaka dosyası (deliller), ilişki panosu |
+| _Ad Soyad_ | [Xavnetex](https://github.com/Xavnetex) | `Vaka`, `Sorusturma` | Yeni vaka, zaman çizelgesi, şüphe analizi |
 
 ## Kullanılan Teknolojiler
 
-- **GUI modülü:** CustomTkinter
+- **GUI modülü:** CustomTkinter (çizimler için Tkinter `Canvas`)
+- **Görüntü işleme:** Pillow (kâğıt, masa ve damga dokuları kodla üretilir)
 - **Veri tabanı:** SQLite
+
+## Arayüz
+
+Uygulama, Soğuk Savaş dönemi bir devlet dairesindeki dedektif masası olarak tasarlandı.
+Dedektif sicil numarasıyla giriş yapar, ardından masadaki nesnelere tıklayarak ekranlara geçer:
+
+| Masadaki nesne | Açılan ekran |
+|---|---|
+| Vaka dosyaları (Gelen Evrak) | Vaka dosyası |
+| Şahıs arşivi | Kişiler (şüpheli ve tanıklar) |
+| Daktilo | Yeni vaka kaydı |
+| Mantar pano | İlişki panosu |
+| Teleks şeridi | Zaman çizelgesi |
+| Not defteri | Şüphe analizi |
+| Radyo | Sesi aç / kapat |
+
+Efektler: damga basma animasyonu, daktilo yazısı, hatalı girişte titreme ve ses efektleri.
 
 ## Kurulum ve Çalıştırma
 
@@ -33,6 +51,7 @@ https://github.com/DeenizAcar/S2_G12_DedektifBurosu
 |---|---|
 | Claude | `veritabani.sql`: tablo tasarımı, örnek veri (demo vaka senaryosu) ve temel sorgular |
 | Claude | `README.md` şablonu |
-| Claude | `kod/main.py`, `kod/gui/ana_pencere.py`, `kod/gui/tema.py`: ana pencere, menü ve Ana Panel arayüzü |
+| Claude | `kod/main.py` ve `kod/gui/` klasörü: pencere akışı, giriş ekranı, vaka masası, geçici sayfalar, tema, dokular ve efektler |
+| Claude | `kod/gui/sesler/*.wav`: ses efektleri Python koduyla sentezlendi (hazır ses dosyası kullanılmadı) |
 
 _(Proje ilerledikçe güncellenecek. Back end sınıfları yapay zekâ kullanılmadan yazılmaktadır.)_
